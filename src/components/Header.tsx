@@ -13,9 +13,9 @@ import {
   VStack,
   HStack,
   Text,
-  useBreakpointValue,
+  // useBreakpointValue,
 } from "@chakra-ui/react"
-import { LuSun, LuMoon } from "react-icons/lu"
+// import { LuSun, LuMoon } from "react-icons/lu"
 import { FiLogOut, FiMenu } from "react-icons/fi"
 import { useColorMode } from "@/components/ui/color-mode"
 import { useState, useMemo, useCallback } from "react"
@@ -23,11 +23,11 @@ import { useNavigate } from "react-router-dom"
 import logo from "@/assets/image.png"
 
 export function Header() {
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode } = useColorMode()
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
   const token = useMemo(() => localStorage.getItem("token"), [])
-  const isMobile = useBreakpointValue({ base: true, md: false })
+  // const isMobile = useBreakpointValue({ base: true, md: false })
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem("token")
@@ -48,10 +48,8 @@ export function Header() {
       px={{ base: 3, md: 6 }}
       py={2.5}
       position="fixed"
-      top="0"
       left={0}
       right={0}
-      width="100%"
       zIndex="1000"
       bg={
         colorMode === "light"

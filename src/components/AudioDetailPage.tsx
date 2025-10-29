@@ -166,7 +166,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useColorModeValue } from "./ui/color-mode";
 import { CgTranscript } from "react-icons/cg";
 import { MdSummarize } from "react-icons/md";
-import { transcribeAudioById, summarizeAudioById, getTranscriptByAudioId } from "../api";
+import { transcribeAudioById, getTranscriptByAudioId } from "../api";
 const LANGUAGE_OPTIONS = [
   { value: "en", label: "English" },
   { value: "zh", label: "中文 (Chinese)" },
@@ -181,7 +181,7 @@ export default function AudioDetailPage() {
   // const audio_id = location.state?.audio_id; // <-- REMOVE this line
   const s3_url = location.state?.s3_url;
   const filename = location.state?.filename;
-  const upload_time = location.state?.upload_time;
+  // const upload_time = location.state?.upload_time; // removed unused
   // If audio_id is present, treat as backend audio
   const [audioUrl, setAudioUrl] = React.useState<string | null>(null);
   React.useEffect(() => {

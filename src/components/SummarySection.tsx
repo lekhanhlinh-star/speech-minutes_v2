@@ -2,9 +2,7 @@ import { Box, Spinner } from "@chakra-ui/react";
 import React from "react";
 import { summarizeAudioById, getSummaryByAudioId,getTranscriptByAudioId } from "../api";
 
-export default function SummarySection({ prompt, apiKey, language, audio_id, summaryOverride, agendasOverride, actionItemsOverride }: {
-  prompt?: string;
-  apiKey?: string;  
+export default function SummarySection({ language, audio_id, summaryOverride, agendasOverride, actionItemsOverride }: {
   language?: string;
   audio_id?: string;
   summaryOverride?: string;

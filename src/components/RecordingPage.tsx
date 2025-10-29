@@ -49,7 +49,7 @@ export default function RecordingPage() {
     try {
       const res = await getAudioList();
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
+  await res.json().catch(() => ({}));
         setAudioListError(data.detail || "Failed to fetch audio list");
       } else {
         const data = await res.json();
@@ -65,18 +65,18 @@ export default function RecordingPage() {
     fetchAudioList();
   }, []);
   const [uploadingIdx, setUploadingIdx] = useReactState<number | null>(null);
-  const [uploadResult, setUploadResult] = useReactState<{ audio_id: string; s3_url: string } | null>(null);
-  const [uploadError, setUploadError] = useReactState<string | null>(null);
+  // const [uploadResult, setUploadResult] = useReactState<{ audio_id: string; s3_url: string } | null>(null); // removed unused
+  // const [uploadError, setUploadError] = useReactState<string | null>(null); // removed unused
 
   async function uploadAudio(file: File, idx: number) {
     setUploadingIdx(idx);
-    setUploadResult(null);
-    setUploadError(null);
+  // setUploadResult(null); // removed unused
+  // setUploadError(null); // removed unused
     try {
       const res = await uploadAudioFile(file);
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setUploadError(data.detail || "Upload failed");
+  // setUploadError(data.detail || "Upload failed"); // removed unused
       } else {
         const data = await res.json();
         console.log("Upload successful:", data);
@@ -89,12 +89,12 @@ export default function RecordingPage() {
           
           
         });
-        setUploadResult(data);
+  // setUploadResult(data); // removed unused
         // Reload audio list from API after upload
         await fetchAudioList();
       }
     } catch (err) {
-      setUploadError("Network error");
+  // setUploadError("Network error"); // removed unused
     } finally {
       setUploadingIdx(null);
     }

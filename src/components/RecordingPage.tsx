@@ -75,7 +75,6 @@ export default function RecordingPage() {
     try {
       const res = await uploadAudioFile(file);
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
   // setUploadError(data.detail || "Upload failed"); // removed unused
       } else {
         const data = await res.json();

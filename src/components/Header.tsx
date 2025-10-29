@@ -48,6 +48,7 @@ export function Header() {
       px={{ base: 3, md: 6 }}
       py={2.5}
       position="fixed"
+      top={0}
       left={0}
       right={0}
       zIndex="1000"

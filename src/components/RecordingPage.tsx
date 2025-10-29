@@ -49,8 +49,8 @@ export default function RecordingPage() {
     try {
       const res = await getAudioList();
       if (!res.ok) {
-  await res.json().catch(() => ({}));
-        setAudioListError(data.detail || "Failed to fetch audio list");
+        await res.json().catch(() => ({}));
+        setAudioListError("Failed to fetch audio list");
       } else {
         const data = await res.json();
         setAudioList(data);

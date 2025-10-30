@@ -366,17 +366,17 @@ function AudioPlayer({ audioUrl, audioRef, playing, setPlaying, current, setCurr
     <Box
       position="fixed"
       left="50%"
-      bottom={{ base: 6, md: 18 }}
+      bottom={18}
       transform="translateX(-50%)"
       zIndex={100}
-      w={{ base: '100vw', sm: '98vw', md: '480px' }}
-      maxW={{ base: '100vw', sm: '98vw', md: '480px' }}
-      borderRadius={{ base: 0, sm: 24, md: 44 }}
+      w={{ base: '98vw', md: '480px' }}
+      maxW="99vw"
+      borderRadius={44}
       boxShadow="0 4px 24px 0 rgba(60,60,80,0.10), 0 1.5px 8px 0 rgba(180,180,200,0.10)"
-      p={{ base: 2, sm: 3 }}
+      p={3}
       display="flex"
       alignItems="center"
-      gap={{ base: 2, sm: 3 }}
+      gap={3}
       bg="#fff"
       border="1.2px solid #eee"
       color="#111"
@@ -387,8 +387,6 @@ function AudioPlayer({ audioUrl, audioRef, playing, setPlaying, current, setCurr
         boxShadow: '0 4px 24px 0 rgba(60,60,80,0.10), 0 1.5px 8px 0 rgba(180,180,200,0.10)',
         border: '1.2px solid #eee',
         color: '#111',
-        left: 0,
-        right: 0,
       }}
     >
       {/* Hidden audio element */}
@@ -402,21 +400,16 @@ function AudioPlayer({ audioUrl, audioRef, playing, setPlaying, current, setCurr
       />
       <IconButton
         onClick={() => setPlaying(p => !p)}
-        aria-label={playing ? 'Pause' : 'Play'}
         style={{
-          width: 48,
-          height: 48,
-          minWidth: 40,
-          minHeight: 40,
-          maxWidth: 60,
-          maxHeight: 60,
+          width: 60,
+          height: 60,
           borderRadius: '50%',
           background: playing
             ? 'linear-gradient(135deg, #b7a6f7 0%, #7c6ee6 100%)'
             : 'rgba(240,240,245,0.85)',
           color: playing ? 'white' : '#7c6ee6',
           border: 'none',
-          fontSize: 28,
+          fontSize: 34,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -426,6 +419,7 @@ function AudioPlayer({ audioUrl, audioRef, playing, setPlaying, current, setCurr
           cursor: 'pointer',
           transition: 'background 0.22s',
         }}
+        aria-label={playing ? 'Pause' : 'Play'}
       >
         {playing ? (
           <FiPause size={34} color="white" />
@@ -434,8 +428,11 @@ function AudioPlayer({ audioUrl, audioRef, playing, setPlaying, current, setCurr
         )}
       </IconButton>
       <Box flex={1} minW={0}>
-        <Box display="flex" alignItems="center" gap={{ base: 1, sm: 2 }}>
-          <Text fontSize={{ base: 'xs', sm: 'sm' }} minW={8} color="#7c6ee6">{format(current)}</Text>
+        {/* <Text fontWeight={700} fontSize={"xl"} mb={1} style={{color:'#5a4bb7', letterSpacing:0.2}}>
+          {name || file.name}
+        </Text> */}
+        <Box display="flex" alignItems="center" gap={2}>
+          <Text fontSize="sm" minW={10} color="#7c6ee6">{format(current)}</Text>
           <input
             type="range"
             min={0}
@@ -450,20 +447,18 @@ function AudioPlayer({ audioUrl, audioRef, playing, setPlaying, current, setCurr
             style={{
               flex: 1,
               accentColor: '#b7a6f7',
-              height: 6,
+              height: 7,
               borderRadius: 7,
               background: 'linear-gradient(90deg, #e3d8fa 0%, #f7f6ff 100%)',
               boxShadow: '0 1px 8px #b7a6f722',
               border: 'none',
-              minWidth: 0,
-              maxWidth: '100%',
             }}
           />
-          <Text fontSize={{ base: 'xs', sm: 'sm' }} minW={8} color="#7c6ee6">{format(duration)}</Text>
+          <Text fontSize="sm" minW={10} color="#7c6ee6">{format(duration)}</Text>
         </Box>
       </Box>
-      <Box display="flex" alignItems="center" gap={1} minW={{ base: 40, sm: 70 }} maxW={{ base: 60, sm: 90 }}>
-        <svg width="18" height="18" fill="none" stroke="#7c6ee6" strokeWidth="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/></svg>
+      <Box display="flex" alignItems="center" gap={1} minW={70} maxW={90}>
+        <svg width="20" height="20" fill="none" stroke="#7c6ee6" strokeWidth="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/></svg>
         <input
           type="range"
           min={0}
@@ -474,14 +469,13 @@ function AudioPlayer({ audioUrl, audioRef, playing, setPlaying, current, setCurr
           style={{
             flex: 1,
             accentColor: '#b7a6f7',
-            maxWidth: 44,
+            maxWidth: 54,
             background: 'linear-gradient(90deg, #e3d8fa 0%, #f7f6ff 100%)',
             borderRadius: 7,
             border: 'none',
-            minWidth: 0,
           }}
         />
-        <svg width="18" height="18" fill="none" stroke="#7c6ee6" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 5v14M15 9v6"/></svg>
+        <svg width="20" height="20" fill="none" stroke="#7c6ee6" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 5v14M15 9v6"/></svg>
       </Box>
     </Box>
   );

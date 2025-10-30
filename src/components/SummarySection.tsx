@@ -1,4 +1,5 @@
 import { Box, Spinner } from "@chakra-ui/react";
+import { motion } from 'framer-motion';
 import React from "react";
 import { summarizeAudioById, getSummaryByAudioId,getTranscriptByAudioId } from "../api";
 
@@ -92,22 +93,17 @@ export default function SummarySection({ language, audio_id, summaryOverride, ag
   };
 
   return (
-    <Box display="flex" justifyContent="center" 
-    
-         w="100%"
-          h="100%"
-          // minH="100vh"
-    minH={{ base: '320px', md: '400px' } }>
+    <Box display="flex" justifyContent="center" w="100%" h="100%" minH={{ base: '320px', md: '400px' }}>
       <Box
-        bg={"rgba(255,255,255,0.32)"}
-        boxShadow={"0 4px 32px 0 rgba(180,180,200,0.10)"}
+        bg="#fff"
+        boxShadow="0 4px 32px 0 rgba(180,180,200,0.10)"
         borderRadius={24}
-        border={"1.5px solid rgba(220,220,230,0.5)"}
-       w="100%"
-          h="100%"
-          minH="100vh"
+        border="1.5px solid rgba(220,220,230,0.5)"
+        w="100%"
+        h="100%"
+        minH="100vh"
         fontSize={fontSize}
-        color="#222"
+        color="#111"
         style={{
           backdropFilter: "blur(12px)",
           WebkitBackdropFilter: "blur(12px)",
@@ -115,43 +111,37 @@ export default function SummarySection({ language, audio_id, summaryOverride, ag
           border: "1.5px solid rgba(220,220,230,0.5)",
           position: "relative",
           overflow: "hidden",
+          color: '#111',
         }}
       >
-        <Box position="absolute" top={0} left={0} right={0} height="60px" borderTopLeftRadius={28} borderTopRightRadius={28} zIndex={1}
-          style={{
-            background: 'linear-gradient(120deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 100%)',
-            filter: 'blur(2.5px)',
-          }}
-        />
-       
         <Box
           mb={7}
           fontSize={{ base: 17, md: 19 }}
-          color="#444"
+          color="#111"
           textAlign="left"
           lineHeight={1.7}
           w="100%"
           h="100%"
           minH="100vh"
           style={{
-            // background:'rgba(197, 7, 7, 0.18)',
             borderRadius:14,
             padding:'14px 18px',
             boxShadow:'0 1.5px 8px 0 rgba(180,180,200,0.08) inset',
-            border:'1px solid rgba(255,255,255,0.18)',
+            border:'1px solid #fff',
             zIndex:2,
             position:'relative',
+            color: '#111',
           }}
         >
           {loading ? (
-            <Spinner size="lg" color="#7c6ee6" />
+            <Spinner size="lg" color="#888" />
           ) : error ? (
-            error
+            <Box color="red.500" fontSize={16} py={4} textAlign="center">{error}</Box>
           ) : showGetSummaryBtn ? (
             <Box textAlign="center" py={6}>
               <button
                 style={{
-                  background: hasTranscript ? '#7c6ee6' : '#ccc',
+                  background: hasTranscript ? '#222' : '#ccc',
                   color: hasTranscript ? '#fff' : '#888',
                   border: 'none',
                   borderRadius: 8,
@@ -159,7 +149,7 @@ export default function SummarySection({ language, audio_id, summaryOverride, ag
                   fontSize: 18,
                   fontWeight: 600,
                   cursor: hasTranscript ? 'pointer' : 'not-allowed',
-                  boxShadow: hasTranscript ? '0 2px 8px #7c6ee633' : 'none',
+                  boxShadow: hasTranscript ? '0 2px 8px #8883' : 'none',
                   letterSpacing: 1
                 }}
                 onClick={handleSummarize}
@@ -176,37 +166,24 @@ export default function SummarySection({ language, audio_id, summaryOverride, ag
             </Box>
           ) : summary ? (
             (() => {
-              // Determine what to render depending on the shape of `summary`
               let parsedSummary = summary;
               if (typeof parsedSummary === 'string') {
                 try {
                   parsedSummary = JSON.parse(parsedSummary);
-                } catch {
-                  // leave as string
-                }
+                } catch {}
               }
-
-              // Check for empty summary result (audio too short)
               const isEmptySummary =
                 parsedSummary && typeof parsedSummary === 'object' &&
-                (
-                  // Case 1: { summary: { summary: '', agendas: [], action_items: [] }, agendas: [], action_items: [] }
-                  (
-                    parsedSummary.summary && typeof parsedSummary.summary === 'object' &&
-                    parsedSummary.summary.summary === '' &&
-                    Array.isArray(parsedSummary.summary.agendas) && parsedSummary.summary.agendas.length === 0 &&
-                    Array.isArray(parsedSummary.summary.action_items) && parsedSummary.summary.action_items.length === 0 &&
+                ((parsedSummary.summary && typeof parsedSummary.summary === 'object' &&
+                  parsedSummary.summary.summary === '' &&
+                  Array.isArray(parsedSummary.summary.agendas) && parsedSummary.summary.agendas.length === 0 &&
+                  Array.isArray(parsedSummary.summary.action_items) && parsedSummary.summary.action_items.length === 0 &&
+                  Array.isArray(parsedSummary.agendas) && parsedSummary.agendas.length === 0 &&
+                  Array.isArray(parsedSummary.action_items) && parsedSummary.action_items.length === 0)
+                  || (parsedSummary.summary === '' &&
                     Array.isArray(parsedSummary.agendas) && parsedSummary.agendas.length === 0 &&
-                    Array.isArray(parsedSummary.action_items) && parsedSummary.action_items.length === 0
-                  )
-                  // Case 2: { summary: '', agendas: [], action_items: [] }
-                  || (
-                    parsedSummary.summary === '' &&
-                    Array.isArray(parsedSummary.agendas) && parsedSummary.agendas.length === 0 &&
-                    Array.isArray(parsedSummary.action_items) && parsedSummary.action_items.length === 0
-                  )
+                    Array.isArray(parsedSummary.action_items) && parsedSummary.action_items.length === 0)
                 );
-
               if (isEmptySummary) {
                 return (
                   <Box color="red.500" fontWeight={600} fontSize={18} textAlign="center" py={6}>
@@ -214,82 +191,198 @@ export default function SummarySection({ language, audio_id, summaryOverride, ag
                   </Box>
                 );
               }
-
-              // If it's an object with agendas or action_items, show all of them and the summary
               if (parsedSummary && typeof parsedSummary === 'object') {
                 const parts: React.ReactNode[] = [];
-
-                // Show summary text if present
-                if (typeof parsedSummary.summary === 'string') {
+                if (typeof parsedSummary.summary === 'string' && parsedSummary.summary.trim() !== '') {
                   parts.push(
-                    <Box key="summary" mb={4}>
-                      <Box fontWeight="bold" color="#7c6ee6" mb={1}>Summary</Box>
-                      <Box color="#444">{parsedSummary.summary}</Box>
-                    </Box>
+                    <motion.div
+                      key="summary"
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, ease: 'easeOut' }}
+                      style={{ marginBottom: 36 }}
+                    >
+                      <Box fontWeight={800} fontSize={24} color="#23272f" mb={2} letterSpacing={0.1} style={{lineHeight:1.2, fontFamily:'Inter,Segoe UI,sans-serif'}}>
+                        <span style={{verticalAlign:'middle', marginRight:10, fontSize:26}}>📝</span>Summary
+                      </Box>
+                      <Box
+                        color="#23272f"
+                        fontSize={18}
+                        fontWeight={500}
+                        bg="#f8fafd"
+                        borderRadius={14}
+                        px={6}
+                        py={5}
+                        boxShadow="0 2px 12px #e9eaf3, 0 1.5px 8px #f3f4f8"
+                        border="1.5px solid #f1f2f6"
+                        style={{lineHeight:1.7, fontFamily:'Inter,Segoe UI,sans-serif', letterSpacing:0.01}}
+                        _hover={{ boxShadow: '0 4px 18px #e9eaf3, 0 2px 12px #f3f4f8' }}
+                        as={motion.div}
+                        // whileHover={{ scale: 1.015 }}
+                        transition="box-shadow 0.18s"
+                      >
+                        {parsedSummary.summary}
+                      </Box>
+                    </motion.div>
                   );
                 }
-
-                // Show all agendas
                 if (Array.isArray(parsedSummary.agendas) && parsedSummary.agendas.length > 0) {
                   parts.push(
-                    <Box key="agendas" mb={4}>
-                      <Box fontWeight="bold" color="#7c6ee6" fontSize={22} mb={3} letterSpacing={1}>
-                        <span style={{verticalAlign:'middle', marginRight:8}}>🗂️</span>Agendas
+                    <motion.div
+                      key="agendas"
+                      initial={{ opacity: 0, y: 32 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, ease: 'easeOut', delay: 0.08 }}
+                      style={{ marginBottom: 36 }}
+                    >
+                      <Box fontWeight={800} color="#23272f" fontSize={22} mb={2} letterSpacing={0.1} style={{lineHeight:1.2, fontFamily:'Inter,Segoe UI,sans-serif'}}>
+                        <span style={{verticalAlign:'middle', marginRight:10, fontSize:24}}>🗂️</span>Agendas
                       </Box>
-                      <Box display="flex" flexWrap="wrap" gap={4}>
+                      <Box display="flex" flexDirection="column" gap={5}>
                         {parsedSummary.agendas.map((agenda: any, idx: number) => (
-                          <Box key={agenda.name || agenda.title || idx}
-                            bg="#f7f6ff" boxShadow="0 2px 8px 0 rgba(124,110,230,0.08)"
-                            borderRadius={16} border="1px solid #e2e0fa" p={4} minW="220px" flex="1 1 320px" mb={2}
+                          <motion.div
+                            key={agenda.name || agenda.title || idx}
+                            initial={{ opacity: 0, y: 18 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.36, delay: 0.12 + idx * 0.06, ease: 'easeOut' }}
+                            whileHover={{ scale: 1.012, boxShadow: '0 4px 18px #e9eaf3, 0 2px 12px #f3f4f8' }}
+                            style={{ background:'#f7f8fa', boxShadow:'0 2px 10px 0 #e9eaf3', borderRadius:14, border:'1.5px solid #f1f2f6', padding: '20px 24px', minWidth:220, marginBottom:2, transition:'box-shadow 0.18s', position:'relative', cursor:'pointer' }}
                           >
-                            <Box fontWeight="semibold" color="#5a4ee6" fontSize={18} mb={2} letterSpacing={0.5}>
-                              <span style={{verticalAlign:'middle', marginRight:6}}>📋</span>{agenda.name || agenda.title || `Agenda ${idx+1}`}
+                            <Box fontWeight={700} color="#23272f" fontSize={18} mb={2} letterSpacing={0.1} style={{display:'flex',alignItems:'center', fontFamily:'Inter,Segoe UI,sans-serif'}}>
+                              <span style={{verticalAlign:'middle', marginRight:8, fontSize:18}}>📋</span>{agenda.name || agenda.title || `Agenda ${idx+1}`}
                             </Box>
                             {Array.isArray(agenda.points) ? (
-                              <ul style={{marginLeft: '0', paddingLeft: '18px', color: '#444', fontSize:'16px', lineHeight:'1.7'} }>
+                              <ul style={{
+                                marginLeft: 0,
+                                paddingLeft: 0,
+                                color: '#23272f',
+                                fontSize: '16px',
+                                lineHeight: '1.7',
+                                marginBottom: 0,
+                                fontWeight: 500,
+                                listStyle: 'none',
+                              }}>
                                 {agenda.points.map((pt: string, i: number) => (
-                                  <li key={i} style={{marginBottom:'6px', display:'flex', alignItems:'center'}}>
-                                    <span style={{color:'#7c6ee6', fontSize:'15px', marginRight:'7px'}}>•</span>
-                                    <span>{pt}</span>
+                                  <li
+                                    key={i}
+                                    style={{
+                                      marginBottom: '10px',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      background: '#fff',
+                                      borderRadius: 10,
+                                      padding: '10px 16px',
+                                      border: '1.5px solid #e6eaf2',
+                                      boxShadow: '0 1px 4px #f2f4fa',
+                                      transition: 'box-shadow 0.18s, background 0.18s',
+                                      position: 'relative',
+                                      minHeight: 38,
+                                    }}
+                                  >
+                                    <span style={{
+                                      color: '#7c6ee6',
+                                      fontSize: '15px',
+                                      marginRight: '14px',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      width: 22,
+                                      height: 22,
+                                      background: '#f1f0fa',
+                                      borderRadius: '50%',
+                                      fontWeight: 700,
+                                      flexShrink: 0,
+                                    }}>•</span>
+                                    <span style={{
+                                      fontWeight: 500,
+                                      color: '#111',
+                                      fontSize: '16px',
+                                      letterSpacing: 0.01,
+                                      lineHeight: 1.6,
+                                      fontFamily: 'Inter,Segoe UI,sans-serif',
+                                      flex: 1,
+                                      wordBreak: 'break-word',
+                                    }}>{pt}</span>
                                   </li>
                                 ))}
                               </ul>
                             ) : (
-                              <Box color="#444">{agenda.points}</Box>
+                              <Box color="#23272f">{agenda.points}</Box>
                             )}
-                          </Box>
+                          </motion.div>
                         ))}
                       </Box>
-                    </Box>
+                    </motion.div>
                   );
                 }
-
-                // Show all action items
                 if (Array.isArray(parsedSummary.action_items) && parsedSummary.action_items.length > 0) {
                   parts.push(
-                    <Box key="actions" mb={4}>
-                      <Box fontWeight="bold" color="#7c6ee6" fontSize={22} mb={3} letterSpacing={1}>
-                        <span style={{verticalAlign:'middle', marginRight:8}}>✅</span>Action Items
+                    <motion.div
+                      key="actions"
+                      initial={{ opacity: 0, y: 32 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, ease: 'easeOut', delay: 0.16 }}
+                      style={{ marginBottom: 36 }}
+                    >
+                      <Box fontWeight={800} color="#23272f" fontSize={22} mb={2} letterSpacing={0.1} style={{lineHeight:1.2, fontFamily:'Inter,Segoe UI,sans-serif'}}>
+                        <span style={{verticalAlign:'middle', marginRight:10, fontSize:24}}>✅</span>Action Items
                       </Box>
-                      <ul style={{marginLeft: '0', paddingLeft: '18px', color: '#444', fontSize:'16px', lineHeight:'1.7'} }>
+                      <ul style={{marginLeft: '0', paddingLeft: '18px', color: '#23272f', fontSize:'16px', lineHeight:'1.7', marginBottom:0, fontWeight:500}}>
                         {parsedSummary.action_items.map((item: any, idx: number) => (
-                          <li key={idx} style={{marginBottom:'8px', display:'flex', alignItems:'center'}}>
-                            <span style={{color:'#7c6ee6', fontSize:'15px', marginRight:'7px'}}>→</span>
-                            <span>{item.task || item.description || JSON.stringify(item)}</span>
-                          </li>
+                          <motion.li
+                            key={idx}
+                            initial={{ opacity: 0, x: 24 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.32, delay: 0.18 + idx * 0.05, ease: 'easeOut' }}
+                            whileHover={{ scale: 1.025, background: '#f5f7fa', boxShadow: '0 4px 18px #e9eaf3' }}
+                            style={{
+                              marginBottom: '14px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              background: '#fafdff',
+                              borderRadius: 14,
+                              padding: '18px 22px',
+                              border: '1.5px solid #e6eaf2',
+                              boxShadow: '0 2px 10px #f2f4fa',
+                              cursor: 'pointer',
+                              transition: 'box-shadow 0.18s, background 0.18s',
+                              position: 'relative',
+                              minHeight: 54,
+                            }}
+                          >
+                            <span style={{
+                              color: '#5bb974',
+                              fontSize: '22px',
+                              marginRight: '18px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              width: 32,
+                              height: 32,
+                              background: '#eafaf1',
+                              borderRadius: '50%',
+                              boxShadow: '0 1px 4px #e9eaf3',
+                              flexShrink: 0,
+                            }}>✔</span>
+                            <span style={{
+                              fontWeight: 600,
+                              color: '#23272f',
+                              fontSize: '17px',
+                              letterSpacing: 0.01,
+                              lineHeight: 1.6,
+                              fontFamily: 'Inter,Segoe UI,sans-serif',
+                              flex: 1,
+                              wordBreak: 'break-word',
+                            }}>{item.task || item.description || JSON.stringify(item)}</span>
+                          </motion.li>
                         ))}
                       </ul>
-                    </Box>
+                    </motion.div>
                   );
                 }
-
-                // If we have parts to show, return them; otherwise fall back to showing the raw object
                 if (parts.length > 0) return parts;
-
                 return typeof parsedSummary === 'object' ? JSON.stringify(parsedSummary, null, 2) : parsedSummary;
               }
-
-              // Fallback: show plain text summary
               return parsedSummary ?? '';
             })()
           ) : null}

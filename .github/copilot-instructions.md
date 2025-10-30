@@ -1,54 +1,65 @@
+
 # Copilot Instructions for AI Agents
 
 ## Project Overview
 - **Framework:** React + TypeScript, built with Vite
-- **Structure:**
-  - `src/` contains all source code
-    - `components/` holds UI components, organized by feature
-    - `api.ts` and `summaryApi.ts` handle API communication
-  - `public/` for static assets
-  - `vite.config.ts` for Vite build configuration
-- **Purpose:** This app provides audio detail, recording, summary, and transcript features for speech minutes.
+- **Purpose:** Audio recording, upload, detail, summary, and transcript for speech minutes
+
+## Architecture & Structure
+- All source code is in `src/`
+  - `components/` contains feature-based UI (e.g. `RecordingPage.tsx`, `AudioDetailPage.tsx`)
+    - Shared UI primitives: `components/ui/` (color mode, toaster, provider, tooltip)
+  - `api.ts` and `summaryApi.ts` centralize all backend and external API calls
+- Routing is handled in `App.tsx` using React Router v7
+- State is managed with React hooks and context (no Redux/MobX)
+- Styling uses global CSS (`App.css`, `index.css`) and per-component imports
+- No test suite or custom build steps beyond Vite
 
 ## Key Patterns & Conventions
-- **Component Structure:**
-  - Use function components with hooks (no class components)
-  - UI is split into feature folders (e.g., `AudioDetailPage.tsx`, `RecordingPage.tsx`)
-  - Shared UI primitives are in `components/ui/`
-- **Styling:**
-  - Use CSS modules (`.css` files imported per component)
-  - Global styles in `App.css` and `index.css`
-- **API Calls:**
-  - Use `api.ts` and `summaryApi.ts` for all backend communication
-  - Prefer async/await and handle errors at the call site
-- **State Management:**
-  - Use React's built-in state/hooks (no Redux or MobX)
-  - Context is used for color mode and notifications (`provider.tsx`, `toaster.tsx`)
+- **Component Pattern:** Always use function components and hooks
+- **API Access:**
+  - Use `api.ts` for backend (audio, auth, transcript, summary)
+  - Use `summaryApi.ts` for external summary API
+  - Always handle errors at the call site
+- **Authentication:**
+  - JWT token is stored in `localStorage` as `token`
+  - `ProtectedRoute.tsx` enforces login for protected pages
+- **Notifications:** Use `toaster.tsx` for user feedback
+- **Color Mode:** Use `provider.tsx` and `color-mode.tsx` for theme context
+- **Navigation:** Use `useNavigate` from `react-router-dom` for programmatic routing
+- **File Upload:** Audio files are uploaded via `uploadAudioFile` in `api.ts` using `FormData`
+- **Audio/Transcript/Summary Flow:**
+  1. User records or uploads audio (`RecordingPage.tsx`)
+  2. Audio list is fetched from backend
+  3. Selecting an audio opens `AudioDetailPage.tsx` (shows transcript and summary tabs)
+  4. Transcript and summary are fetched/generated via API helpers
 
 ## Developer Workflows
-- **Install dependencies:**
-  - `npm install`
-- **Start dev server:**
-  - `npm run dev` (runs Vite with HMR)
-- **Build for production:**
-  - `npm run build`
-- **Lint:**
-  - `npm run lint` (uses ESLint, see `eslint.config.js`)
-- **No test suite is present by default.**
+- **Install dependencies:** `npm install`
+- **Start dev server:** `npm run dev` (Vite with HMR)
+- **Build for production:** `npm run build`
+- **Lint:** `npm run lint` (see `eslint.config.js`)
+- **No tests:** No test scripts or test folders present
 
 ## Integration & External Dependencies
-- **Vite plugins:** See `vite.config.ts` for plugin usage
-- **ESLint:** Configured for TypeScript and React, see `eslint.config.js`
-- **No custom code generation or build steps beyond Vite.**
+- **Chakra UI:** Used for all UI components and layout
+- **Vite plugins:** See `vite.config.ts` (React, tsconfig paths)
+- **ESLint:** See `eslint.config.js` for rules (TypeScript, React, hooks)
+- **Other:**
+  - `next-themes` for color mode
+  - `wavesurfer.js` for audio waveform (if used)
+  - `axios` for some API calls (see `api.ts`)
 
 ## Examples
-- To add a new feature page, create a new file in `src/components/`, import it in `App.tsx`, and follow the function component pattern.
-- For new API endpoints, add functions to `api.ts` or `summaryApi.ts` and call them from components.
+- To add a new feature page: create a file in `src/components/`, import and route it in `App.tsx`, use function component + hooks
+- To add a backend API call: add to `api.ts`, use async/await, handle errors, and call from components
+- To add a notification: use `toaster.create({ title, type, ... })`
 
 ## References
-- See `README.md` for Vite/React/ESLint setup details
-- See `src/components/` for UI and feature structure
-- See `vite.config.ts` for build customization
+- `README.md`: Vite/React/ESLint setup
+- `src/components/`: UI and feature structure
+- `vite.config.ts`: Build customization
+- `api.ts`, `summaryApi.ts`: API patterns
 
 ---
-For questions about project-specific patterns, check the referenced files or ask for clarification.
+If any conventions or flows are unclear, check the referenced files or ask for clarification.

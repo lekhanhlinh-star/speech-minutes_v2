@@ -360,7 +360,7 @@ export default function RecordingPage() {
       {/* Confirm upload button and selected files */}
       {files.length > 0 && (
         <Box mt={2} mb={2} w={{ base: "100%", sm: "90%", md: "500px" }}>
-          <Text mb={1} color={textColor} fontSize="md">Đã chọn: {files.map(f => f.name).join(", ")}</Text>
+          <Text mb={2} color={textColor} fontSize="md">Selected: {files.map(f => f.name).join(", ")}</Text>
           <IconButton
             onClick={handleConfirmUpload}
             loading={uploadingIdx !== null}

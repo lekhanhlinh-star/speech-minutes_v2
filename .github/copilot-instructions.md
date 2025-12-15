@@ -2,37 +2,36 @@
 # Copilot Instructions for AI Agents
 
 ## Project Overview
-- **Framework:** React + TypeScript, built with Vite
+- **Framework:** React + TypeScript (Vite)
 - **Purpose:** Audio recording, upload, detail, summary, and transcript for speech minutes
 
 ## Architecture & Structure
 - All source code is in `src/`
-  - `components/` contains feature-based UI (e.g. `RecordingPage.tsx`, `AudioDetailPage.tsx`)
+  - `components/`: Feature-based UI (e.g. `RecordingPage.tsx`, `AudioDetailPage.tsx`, `Home.tsx`)
     - Shared UI primitives: `components/ui/` (color mode, toaster, provider, tooltip)
-  - `api.ts` and `summaryApi.ts` centralize all backend and external API calls
-- Routing is handled in `App.tsx` using React Router v7
-- State is managed with React hooks and context (no Redux/MobX)
-- Styling uses global CSS (`App.css`, `index.css`) and per-component imports
-- No test suite or custom build steps beyond Vite
+  - `api.ts`: Centralizes backend API calls (audio, auth, transcript, summary)
+  - `summaryApi.ts`: Handles external summary API
+- Routing: Managed in `App.tsx` using React Router v7
+- State: Managed with React hooks and context (no Redux/MobX)
+- Styling: Global CSS (`App.css`, `index.css`) and per-component imports
 
 ## Key Patterns & Conventions
-- **Component Pattern:** Always use function components and hooks
+- **Component Pattern:** Always use function components and React hooks
 - **API Access:**
-  - Use `api.ts` for backend (audio, auth, transcript, summary)
-  - Use `summaryApi.ts` for external summary API
-  - Always handle errors at the call site
+  - Use `api.ts` for backend, `summaryApi.ts` for external summary
+  - Always handle errors at the call site (no global error boundary)
 - **Authentication:**
-  - JWT token is stored in `localStorage` as `token`
+  - JWT token stored in `localStorage` as `token`
   - `ProtectedRoute.tsx` enforces login for protected pages
-- **Notifications:** Use `toaster.tsx` for user feedback
+- **Notifications:** Use `toaster.tsx` (`toaster.create({ title, type, ... })`)
 - **Color Mode:** Use `provider.tsx` and `color-mode.tsx` for theme context
 - **Navigation:** Use `useNavigate` from `react-router-dom` for programmatic routing
-- **File Upload:** Audio files are uploaded via `uploadAudioFile` in `api.ts` using `FormData`
+- **File Upload:** Use `uploadAudioFile` in `api.ts` with `FormData`
 - **Audio/Transcript/Summary Flow:**
   1. User records or uploads audio (`RecordingPage.tsx`)
-  2. Audio list is fetched from backend
-  3. Selecting an audio opens `AudioDetailPage.tsx` (shows transcript and summary tabs)
-  4. Transcript and summary are fetched/generated via API helpers
+  2. Audio list fetched from backend
+  3. Selecting audio opens `AudioDetailPage.tsx` (transcript/summary tabs)
+  4. Transcript and summary fetched/generated via API helpers
 
 ## Developer Workflows
 - **Install dependencies:** `npm install`
@@ -42,18 +41,18 @@
 - **No tests:** No test scripts or test folders present
 
 ## Integration & External Dependencies
-- **Chakra UI:** Used for all UI components and layout
+- **Chakra UI:** All UI components/layout
 - **Vite plugins:** See `vite.config.ts` (React, tsconfig paths)
-- **ESLint:** See `eslint.config.js` for rules (TypeScript, React, hooks)
+- **ESLint:** See `eslint.config.js` (TypeScript, React, hooks)
 - **Other:**
   - `next-themes` for color mode
   - `wavesurfer.js` for audio waveform (if used)
-  - `axios` for some API calls (see `api.ts`)
+  - `axios` for API calls (see `api.ts`)
 
 ## Examples
-- To add a new feature page: create a file in `src/components/`, import and route it in `App.tsx`, use function component + hooks
-- To add a backend API call: add to `api.ts`, use async/await, handle errors, and call from components
-- To add a notification: use `toaster.create({ title, type, ... })`
+- Add a feature page: create in `src/components/`, import and route in `App.tsx`, use function component + hooks
+- Add a backend API call: add to `api.ts`, use async/await, handle errors at call site
+- Add a notification: use `toaster.create({ title, type, ... })`
 
 ## References
 - `README.md`: Vite/React/ESLint setup

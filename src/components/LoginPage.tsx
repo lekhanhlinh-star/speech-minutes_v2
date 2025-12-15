@@ -73,6 +73,7 @@ export default function LoginPage() {
               placeholder="Username"
               value={username}
               onChange={e => setUsername(e.target.value)}
+              color={"#000000ff"}
               size="lg"
               borderRadius={14}
               bg="#f7f6ff"
@@ -91,6 +92,8 @@ export default function LoginPage() {
               size="lg"
               borderRadius={14}
               bg="#f7f6ff"
+              color={"#000000ff"}
+
               boxShadow="0 1.5px 8px 0 #b4b4c80a"
               border="1.5px solid #ece9fa"
               fontSize={17}

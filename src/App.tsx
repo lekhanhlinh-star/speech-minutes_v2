@@ -2,14 +2,18 @@ import './App.css'
 import { Header } from './components/Header'
 
 
-import RecordingPage from "./components/RecordingPage"
+// import RecordingPage from "./components/RecordingPage"
 import { Toaster } from "./components/ui/toaster"
 import { Box } from '@chakra-ui/react'
-import AudioDetailPage from './components/AudioDetailPage'
 import LoginPage from './components/LoginPage'
 import SignUpPage from './components/SignUpPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import UploadPage from './page/UploadPage'
+import MeetingStatusPage from './page/MeetingStatusPage'
+import MeetingDetailPage from './page/MeetingDetailPage'
+import RecordingPage from './page/RecordingPage'
+import HomePage from './page/HomePage'
 
 
 function AppContent() {
@@ -22,32 +26,22 @@ function AppContent() {
         flex="1"
         display="flex"
         flexDir="column"
-        alignItems="center"
-        justifyContent="flex-start"
+        width="100%"
+        minH="100vh"
       >
         <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/record" element={
-            <ProtectedRoute>
-              <RecordingPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/" element={
-            <ProtectedRoute>
-              <RecordingPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/audio-detail/:audio_id" element={
-            <ProtectedRoute>
-              <AudioDetailPage />
-            </ProtectedRoute>
-          } />
-          <Route path="*" element={
-            <ProtectedRoute>
-              <RecordingPage />
-            </ProtectedRoute>
-          } />
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/record" element={<RecordingPage />} />
+            <Route path="/uploads" element={<UploadPage />} />
+            <Route path="/meeting-status" element={<MeetingStatusPage />} />
+            {/* <Route path="/meetings" element={<MeetingStatusPage />} /> */}
+            <Route path="/meeting/:meetingId" element={<MeetingDetailPage />} />
+          </Route>
+
         </Routes>
       </Box>
     </>

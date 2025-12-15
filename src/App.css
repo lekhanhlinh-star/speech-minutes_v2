@@ -1,8 +1,46 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: initial;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 768px) {
+  #root {
+    font-size: 14px;
+  }
+}
+
+/* Ensure proper mobile scrolling */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile touch targets */
+@media (max-width: 768px) {
+  button, 
+  [role="button"],
+  input,
+  textarea,
+  select {
+    min-height: 44px; /* Apple's recommended minimum touch target size */
+  }
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
 }
 
 .logo {
@@ -39,4 +77,23 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .mobile-hide {
+    display: none !important;
+  }
+  
+  .mobile-full-width {
+    width: 100% !important;
+  }
+  
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+  
+  .mobile-center {
+    text-align: center !important;
+  }
 }

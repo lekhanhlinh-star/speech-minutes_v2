@@ -28,11 +28,30 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  /* Improve mobile scrolling */
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden; /* Prevent horizontal scroll on mobile */
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+/* Mobile responsive headings */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.2em;
+    line-height: 1.2;
+  }
+  
+  h2 {
+    font-size: 1.8em;
+  }
+  
+  h3 {
+    font-size: 1.4em;
+  }
 }
 
 button {
@@ -46,12 +65,43 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
+/* Mobile button improvements */
+@media (max-width: 768px) {
+  button {
+    padding: 0.8em 1.4em;
+    font-size: 0.9em;
+    min-height: 44px; /* Apple's recommended touch target */
+  }
+}
+
 button:hover {
   border-color: #646cff;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Mobile input improvements */
+input, textarea, select {
+  font-size: 16px; /* Prevent zoom on iOS */
+}
+
+@media (max-width: 768px) {
+  input, textarea, select {
+    min-height: 44px;
+    padding: 12px 16px;
+  }
+}
+
+/* Prevent zoom on inputs on iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -64,5 +114,18 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+/* Mobile utility classes */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
   }
 }

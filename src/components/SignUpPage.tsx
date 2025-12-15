@@ -71,6 +71,7 @@ export default function SignUpPage({ onSignUp }: { onSignUp?: (username: string)
           <Box mb={4}>
             <Input
               placeholder="Username"
+              color={"#000000ff"}
               value={username}
               onChange={e => setUsername(e.target.value)}
               size="lg"
@@ -86,6 +87,7 @@ export default function SignUpPage({ onSignUp }: { onSignUp?: (username: string)
             <Input
               placeholder="Password"
               type="password"
+              color={"#000000ff"}
               value={password}
               onChange={e => setPassword(e.target.value)}
               size="lg"
@@ -101,6 +103,7 @@ export default function SignUpPage({ onSignUp }: { onSignUp?: (username: string)
             <Input
               placeholder="Confirm Password"
               type="password"
+              color={"#000000ff"}
               value={confirmPassword}
               onChange={e => setConfirmPassword(e.target.value)}
               size="lg"

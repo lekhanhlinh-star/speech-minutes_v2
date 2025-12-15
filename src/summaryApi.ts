@@ -3,6 +3,7 @@ export async function fetchSummary(transcript: string, apiKey: string, language?
   const requestConfig = {
     method: "POST",
     headers: {
+      "ngrok-skip-browser-warning": "true",
       "Content-Type": "application/json",
       "Authorization": `Bearer ${apiKey}`
     },

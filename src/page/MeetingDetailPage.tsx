@@ -958,7 +958,7 @@ export default function MeetingDetailPage() {
       </Box>
 
       {/* Floating Chat Bubble */}
-      <ChatBubble meetingId={meetingId} meetingTitle={meeting.title} />
+      {/* <ChatBubble meetingId={meetingId} meetingTitle={meeting.title} /> */}
     </Box>
   )
 }
